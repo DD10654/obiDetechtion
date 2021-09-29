@@ -1,31 +1,63 @@
-//Variables
+imgHall = "";
+imgMBedroom = "";
+imgBathroom = "";
+imgKBedroom = "";
+imgMulroom = "";
+curHeading = "";
+curImage = "";
 status1 = "";
 object = [];
 
-//Basic Functions
 function preload() {}
 
 function setup() {
-    canvas = createCanvas(380, 380);
+    canvas = createCanvas(640, 420);
     canvas.center();
-    video = createCapture(VIDEO);
-    video.hide();
     objectDetector = ml5.objectDetector("cocossd", modelLoaded);
-    document.getElementById("status").innerHTML = "Status : Detecting Objects!";
+}
+
+function draw() {}
+
+function hall() {
+    curHeading = "Hall";
+    curImage = "";
+//    window.location = "show.html";
+}
+
+function mBedroom() {
+    curHeading = "Master Bedroom";
+    curImage = "";
+//    window.location = "show.html";
+}
+
+function bathroom() {
+    curHeading = "Bathroom";
+    curImage = "";
+//    window.location = "show.html";
+}
+
+function kBedroom() {
+    curHeading = "Kid's Bedroom";
+    curImage = "";
+//    window.location = "show.html";
+}
+
+function mulroom() {
+    curHeading = "Multiperpose Room";
+    curImage = "";
+//    window.location = "show.html";
 }
 
 function draw() {
-    image(video, 0, 0, 480, 380);
+    image(curImage, 0, 0, 640, 420);
     if (status1 != "") {
-        objectDetector.detect(video, gotResult);
         for (i = 0; i < object.length; i++) {
-            document.getElementById("status").innerHTML = "Status : Object Detected!";
-            document.getElementById("no").innerHTML = "No. of Objects are " + object.length + "!";
+            document.getElementById("status").innerHTML = "Status : Object Detected";
             percent = floor(object[i].confidence * 100);
             var d = random(100, 255);
             var e = random(100, 255);
             var f = random(100, 255);
-            fill(d, e, f);
+            fill("#FF0000");
             text(object[i].label + " " + percent + "%", object[i].x + 15, object[i].y + 15);
             noFill();
             stroke(d, e, f);
@@ -35,11 +67,10 @@ function draw() {
     }
 }
 
-// JS Code
-
 function modelLoaded() {
     console.log("Model Loaded!")
     status1 = true;
+    objectDetector.detect(curImage, gotResult);
 }
 
 function gotResult(error, result) {
